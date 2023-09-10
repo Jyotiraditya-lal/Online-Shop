@@ -1,5 +1,6 @@
 const path=require('path')
 const rootDir=require('../Util/path')
+const Product=require('../models/product')
 
 exports.getAddProduct=(req,res,next)=>{
     
@@ -7,11 +8,12 @@ exports.getAddProduct=(req,res,next)=>{
 }
 
 exports.postAddProduct=(req,res,next)=>{
-    console.log(req.body)
+    const product= new  Product(req.body.title,req.body.amount)
+    product.save()
     res.redirect('/')
 
 }
 
 exports.getShop=(req,res,next)=>{
-    res.sendFile(path.join(rootDir, 'Views', 'shop.html'))
+    Product.fetchAll((products)=>{res.sendFile(path.join(rootDir, 'Views', 'shop.html'))})
 }
